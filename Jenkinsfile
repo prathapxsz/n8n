@@ -2,41 +2,29 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "n8n"
-        REGISTRY = "prathapxsz/turium"
-        TAG = "${env.BUILD_NUMBER}"
-        DOCKERFILE_PATH = "n8n/docker/images/n8n/Dockerfile"
-        BUILD_CONTEXT = "n8n/docker/images/n8n"
+        DOCKERHUB_CREDENTIALS = 'docker'  
+        DOCKERHUB_REPO = 'prathapxsz/turium'
+        IMAGE_TAG = 'n8n'
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${IMAGE_NAME}:${TAG}", "-f ${DOCKERFILE_PATH} ${BUILD_CONTEXT}")
+                    // Build Docker image using Dockerfile in n8n/docker/images/n8n
+                    dockerImage = docker.build("${env.DOCKERHUB_REPO}:${env.IMAGE_TAG}", "-f n8n/docker/images/n8n/Dockerfile .")
                 }
             }
         }
-        stage('Push Docker Image') {
+
+        stage('Login to DockerHub and Push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-registry-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    script {
-                        sh "echo $DOCKER_PASS | docker login $REGISTRY -u $DOCKER_USER --password-stdin"
-                        sh "docker tag ${IMAGE_NAME}:${TAG} $REGISTRY/${IMAGE_NAME}:${TAG}"
-                        sh "docker push $REGISTRY/${IMAGE_NAME}:${TAG}"
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKERHUB_CREDENTIALS) {
+                        dockerImage.push()
                     }
                 }
             }
-        }
-    }
-    post {
-        always {
-            cleanWs()
         }
     }
 }
