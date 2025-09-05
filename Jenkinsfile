@@ -35,6 +35,9 @@ pipeline {
         // }
         stage('Check Versions') {
             steps {
+                // sh 'corepack enable'
+                // sh 'corepack prepare pnpm@10.2.1 --activate'
+                // sh 'pnpm install --no-frozen-lockfile'
                 sh 'pnpm build:docker'
             }
         }
