@@ -22,6 +22,25 @@ pipeline {
             }
         }
 
+        stage('Docker Login') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKERHUB_CREDENTIALS) {
+                        echo "Logged in to Docker Hub"
+                    }
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh """
+                   docker tag n8nio/n8n:n8n ${DOCKERHUB_REPO}:${IMAGE_TAG}
+                   docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}
+                """
+            }
+        }
+
 
     }
 }
