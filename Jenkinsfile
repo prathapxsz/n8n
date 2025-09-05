@@ -17,14 +17,27 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        // stage('Build Docker Image') {
+        //     steps {
+        //         sh '''
+        //         export DOCKER_HOST=tcp://localhost:2375
+        //         export DOCKER_TLS_VERIFY=
+        //         export DOCKER_CERT_PATH=
+        //         docker build -t $DOCKERHUB_REPO:$IMAGE_TAG -f docker/images/n8n/Dockerfile .
+        //     '''
+        //     }
+        // }
+
+        stage('Setup pnpm') {
             steps {
-                sh '''
-                export DOCKER_HOST=tcp://localhost:2375
-                export DOCKER_TLS_VERIFY=
-                export DOCKER_CERT_PATH=
-                docker build -t $DOCKERHUB_REPO:$IMAGE_TAG -f docker/images/n8n/Dockerfile .
-            '''
+                sh 'npm install -g pnpm@9'
+            }
+        }
+        stage('Check Versions') {
+            steps {
+                sh 'node -v'
+                sh 'pnpm -v'
+                sh 'pnpm build:docker'
             }
         }
 
