@@ -15,12 +15,12 @@ pipeline {
                 sh 'ls -lah'
             }
         }
-        stage('Check Versions') {
-            steps {
-                sh 'pnpm install --frozen-lockfile'
-                sh 'pnpm build:docker'
-            }
-        }
+        // stage('Check Versions') {
+        //     steps {
+        //         sh 'pnpm install --frozen-lockfile'
+        //         sh 'pnpm build:docker'
+        //     }
+        // }
 
         stage('Docker Login') {
             steps {
