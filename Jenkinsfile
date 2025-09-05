@@ -4,8 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = 'docker'  
         DOCKERHUB_REPO = 'prathapxsz/turium'
-        IMAGE_TAG = 'n8n'
-        DOCKER_HOST = 'tcp://localhost:2375'   // Use DinD sidecar
+        IMAGE_TAG = 'n8n'  // Use DinD sidecar
     }
 
     stages {
