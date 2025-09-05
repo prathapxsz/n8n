@@ -37,6 +37,8 @@ pipeline {
             steps {
                 sh 'node -v'
                 sh 'pnpm -v'
+                sh 'pnpm install --frozen-lockfile'
+                sh 'corepack enable'
                 sh 'pnpm build:docker'
             }
         }
