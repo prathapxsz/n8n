@@ -15,7 +15,7 @@ pipeline {
                     // Build Docker image using Dockerfile in n8n/docker/images/n8n
                     dockerImage = docker.build(
                         "${env.DOCKERHUB_REPO}:${env.IMAGE_TAG}",
-                        "-f n8n/docker/images/n8n/Dockerfile ."
+                        "-f /docker/images/n8n/Dockerfile ."
                     )
                 }
             }
