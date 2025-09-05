@@ -18,6 +18,7 @@ pipeline {
         }
         stage('Check Versions') {
             steps {
+                sh 'pnpm install --frozen-lockfile'
                 sh 'pnpm build:docker'
             }
         }
