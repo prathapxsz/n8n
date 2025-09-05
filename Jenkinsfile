@@ -28,17 +28,13 @@ pipeline {
         //     }
         // }
 
-        stage('Setup pnpm') {
-            steps {
-                sh 'npm install -g pnpm@10'
-            }
-        }
+        // stage('Setup pnpm') {
+        //     steps {
+        //         sh 'npm install -g pnpm@10'
+        //     }
+        // }
         stage('Check Versions') {
             steps {
-                sh 'node -v'
-                sh 'pnpm -v'
-                sh 'pnpm install --frozen-lockfile'
-                sh 'corepack enable'
                 sh 'pnpm build:docker'
             }
         }
