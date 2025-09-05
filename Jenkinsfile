@@ -27,23 +27,12 @@ pipeline {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', env.DOCKERHUB_CREDENTIALS) {
                         echo "Logged in to Docker Hub"
+                        sh "docker tag n8nio/n8n:n8n ${DOCKERHUB_REPO}:${IMAGE_TAG}"
+                        sh "docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}"
                     }
                 }
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                        docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}
-                        docker logout
-                        '''
-            }
-        }
-
-
     }
-}
 }
