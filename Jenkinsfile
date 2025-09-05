@@ -30,7 +30,7 @@ pipeline {
 
         stage('Setup pnpm') {
             steps {
-                sh 'npm install -g pnpm@9'
+                sh 'npm install -g pnpm@10'
             }
         }
         stage('Check Versions') {
