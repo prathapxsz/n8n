@@ -34,13 +34,16 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                sh """
-                   docker tag n8nio/n8n:n8n ${DOCKERHUB_REPO}:${IMAGE_TAG}
-                   docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}
-                """
+                withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}
+                        docker logout
+                        '''
             }
         }
 
 
     }
+}
 }
