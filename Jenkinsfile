@@ -38,6 +38,8 @@ pipeline {
                 // sh 'corepack enable'
                 // sh 'corepack prepare pnpm@10.2.1 --activate'
                 // sh 'pnpm install --no-frozen-lockfile'
+                sh 'npm install -g pnpm@10'
+                sh 'pnpm install'
                 sh 'pnpm build:docker'
             }
         }
