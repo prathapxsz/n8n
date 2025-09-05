@@ -8,6 +8,17 @@ pipeline {
     }
 
     stages {
+        stage('Install Docker') {
+            steps {
+                sh '''
+                    # Update and install Docker (Debian/Ubuntu style)
+                    apt-get update
+                    apt-get install -y docker.io
+                    docker --version
+                '''
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
