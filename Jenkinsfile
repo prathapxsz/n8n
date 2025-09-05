@@ -19,13 +19,12 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    // Build Docker image using Dockerfile in n8n/docker/images/n8n
-                    dockerImage = docker.build(
-                        "${env.DOCKERHUB_REPO}:${env.IMAGE_TAG}",
-                        "-f docker/images/n8n/Dockerfile ."
-                    )
-                }
+                sh '''
+                export DOCKER_HOST=tcp://localhost:2375
+                export DOCKER_TLS_VERIFY=
+                export DOCKER_CERT_PATH=
+                docker build -t $DOCKERHUB_REPO:$IMAGE_TAG -f docker/images/n8n/Dockerfile .
+            '''
             }
         }
 
