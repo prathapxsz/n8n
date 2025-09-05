@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'jenkinsci/docker-agent'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     environment {
         DOCKERHUB_CREDENTIALS = 'docker'  
@@ -8,17 +13,6 @@ pipeline {
     }
 
     stages {
-        stage('Install Docker') {
-            steps {
-                sh '''
-                    # Update and install Docker (Debian/Ubuntu style)
-                    apt-get update
-                    apt-get install -y docker.io
-                    docker --version
-                '''
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
