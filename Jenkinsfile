@@ -16,42 +16,12 @@ pipeline {
                 sh 'ls -lah'
             }
         }
-
-        // stage('Build Docker Image') {
-        //     steps {
-        //         sh '''
-        //         export DOCKER_HOST=tcp://localhost:2375
-        //         export DOCKER_TLS_VERIFY=
-        //         export DOCKER_CERT_PATH=
-        //         docker build -t $DOCKERHUB_REPO:$IMAGE_TAG -f docker/images/n8n/Dockerfile .
-        //     '''
-        //     }
-        // }
-
-        // stage('Setup pnpm') {
-        //     steps {
-        //         sh 'npm install -g pnpm@10'
-        //     }
-        // }
         stage('Check Versions') {
             steps {
-                // sh 'corepack enable'
-                // sh 'corepack prepare pnpm@10.2.1 --activate'
-                // sh 'pnpm install --no-frozen-lockfile'
-                sh 'npm install -g pnpm@10'
-                sh 'pnpm install'
                 sh 'pnpm build:docker'
             }
         }
 
-        stage('Login to DockerHub and Push') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKERHUB_CREDENTIALS) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
+
     }
 }
