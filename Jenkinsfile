@@ -9,6 +9,14 @@ pipeline {
     }
 
     stages {
+
+        stage('Check Workspace') {
+            steps {
+                sh 'pwd'
+                sh 'ls -lah'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
